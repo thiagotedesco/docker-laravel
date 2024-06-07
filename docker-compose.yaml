@@ -1,0 +1,27 @@
+services:
+  nginx:
+    container_name: nginx-study
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - study-network
+
+  php-fpm:
+    container_name: php-fpm-study
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - study-network
+    command: /bin/bash -c "/var/tmp/install_laravel.sh && php-fpm"
+
+networks:
+  study-network:
+    driver: bridge
